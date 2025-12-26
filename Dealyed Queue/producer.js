@@ -26,7 +26,9 @@ async function sendtoDelayedQueue(batchId, orders, delay) {
   });
 
   channel.publish(exchange, "", Buffer.from(message), {
-    "x-delay": delay
+    headers: {
+      "x-delay": delay
+    }
   });
 
   console.log(`Sent message to delayed queue: ${message}`);
@@ -48,6 +50,10 @@ async function processBatchOrders() {
   const delay = 10000;
 
   sendtoDelayedQueue(batchId, orders, delay);
+}
+
+async function processOrders(orders) {
+  console.log(`Processing orders: ${orders}`);
 }
 
 function generateBatchId() {
